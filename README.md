@@ -117,12 +117,12 @@ CopyEdit
 
 
 
-Penjelasan singkat:
+<p>Penjelasan singkat:
 •	Klien membuat koneksi WebSocket ke server.
 •	Saat menerima pesan, klien membuat elemen notifikasi baru di pojok kanan atas.
 •	Notifikasi otomatis hilang setelah 8 detik.
 
-3. Hasil Akhir
+<p>3. Hasil Akhir
 Saat program dijalankan:
 •	Server akan aktif di ws://localhost:8080.
 •	Setiap 5 detik, pengguna akan menerima notifikasi baru yang berisi waktu server saat itu.
