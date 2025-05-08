@@ -21,30 +21,7 @@ menerima dan menunjukkan pemberitahuan.
 Implementasi
 
 1. Membuat Server WebSocket (Node.js)
-javascript
-CopyEdit
-// server.js
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
-
-console.log('WebSocket server berjalan di ws://localhost:8080');
-
-wss.on('connection', function connection(ws) {
-    console.log('Client terhubung');
-    
-    // Kirim notifikasi setiap 5 detik
-    setInterval(() => {
-        const notif = {
-            title: "Notifikasi Baru!",
-            message: `Waktu server: ${new Date().toLocaleTimeString()}`
-        };
-        ws.send(JSON.stringify(notif));
-    }, 5000);
-    
-    ws.on('close', () => {
-        console.log('Client terputus');
-    });
-});
+<img src="real time notification.jpeg">
 Penjelasan singkat:
 •	Server membuat koneksi WebSocket pada port 8080.
 •	Setiap 5 detik, server mengirim notifikasi dengan waktu server saat ini.
