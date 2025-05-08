@@ -120,7 +120,7 @@ CopyEdit
 <p>Penjelasan singkat:
 •	Klien membuat koneksi WebSocket ke server.
 •	Saat menerima pesan, klien membuat elemen notifikasi baru di pojok kanan atas.
-•	Notifikasi otomatis hilang setelah 8 detik.
+•	Notifikasi otomatis hilang setelah 8 detik.</p>
 
 <p>3. Hasil Akhir
 Saat program dijalankan:
