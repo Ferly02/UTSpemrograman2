@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time Notifications</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --success-color: #4caf50;
+        --info-color: #3f8efc;
+        --dark-color: #2b2d42;
+        --light-color: #f8f9fa;
+        --read-color: #e9ecef;
+        --message-color: #4361ee;
+        --order-color: #4caf50;
+        --reminder-color: #f9a826;
+        --comment-color: #9c27b0;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: var(--dark-color);
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .app-title {
+        margin-bottom: 30px;
+        color: var(--dark-color);
+        font-weight: 600;
+      }
+
+      .connection-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      .status-connected {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .status-disconnected {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      #notificationContainer {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        max-width: 350px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      @media (max-width: 768px) {
+        #notificationContainer {
+          bottom: 70px;
+          right: 10px;
+          left: 10px;
+          max-width: none;
+        }
+      }
+
+      .notification {
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transform: translateX(100%);
+        opacity: 0;
+        animation: slideIn 0.5s forwards;
+        border-left: 5px solid var(--primary-color);
+      }
+
+      .notification.type-message {
+        border-left-color: var(--message-color);
+      }
+
+      .notification.type-order {
+        border-left-color: var(--order-color);
+      }
+
+      .notification.type-reminder {
+        border-left-color: var(--reminder-color);
+      }
+
+      .notification.type-comment {
+        border-left-color: var(--comment-color);
+      }
+
+      .notification.read {
+        border-left-color: var(--read-color);
+        background-color: var(--read-color);
+        opacity: 0.7;
+      }
+
+      .notification-content {
+        flex: 1;
+        text-align: left;
+        padding-right: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .notification-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: var(--transition);
+        color: var(--dark-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-read {
+        color: var(--info-color);
+      }
+
+      .btn-close {
+        color: #dc3545;
+      }
+
+      .control-panel {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      .toggle-btn {
+        padding: 12px 24px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toggle-btn:hover {
+        background-color: #3a56d4;
+        transform: translateY(-2px);
+      }
+
+      .toggle-btn:active {
+        transform: translateY(0);
+      }
+
+      .toggle-btn i {
+        font-size: 18px;
+      }
+
+      .btn-reconnect {
+        background-color: var(--dark-color);
+      }
+
+      .btn-reconnect:hover {
+        background-color: #3a3d58;
+      }
+
+      @keyframes slideIn {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        font-style: italic;
+        display: none;
+      }
+
+      .notification-icon {
+        margin-right: 10px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: var(--dark-color);
+      }
+
+      .type-message .notification-icon {
+        color: var(--message-color);
+      }
+
+      .type-order .notification-icon {
+        color: var(--order-color);
+      }
+
+      .type-reminder .notification-icon {
+        color: var(--reminder-color);
+      }
+
+      .type-comment .notification-icon {
+        color: var(--comment-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <h1 class="app-title">Real-Time Notification System</h1>
+      <div id="connectionStatus" class="connection-status status-disconnected">
+        <i class="fas fa-circle"></i> Disconnected
+      </div>
+    </div>
+
+    <div id="notificationContainer">
+      <div class="empty-state" id="emptyState">
+        <p>No notifications yet</p>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <button id="reconnectButton" class="toggle-btn btn-reconnect">
+        <i class="fas fa-sync"></i> Reconnect
+      </button>
+      <button id="toggleNotifications" class="toggle-btn">
+        <i class="fas fa-bell-slash"></i> Disable Notifications
+      </button>
+    </div>
+
+    <script>
+      const notificationContainer = document.getElementById(
+        'notificationContainer'
+      );
+      const toggleButton = document.getElementById('toggleNotifications');
+      const reconnectButton = document.getElementById('reconnectButton');
+      const connectionStatus = document.getElementById('connectionStatus');
+      const emptyState = document.getElementById('emptyState');
+
+      let notificationsEnabled = true;
+      let notificationCount = 0;
+      let notificationId = 0;
+      let ws = null;
+
+      // Icon mapping for different notification types
+      const typeIcons = {
+        message: 'fa-envelope',
+        order: 'fa-shopping-cart',
+        reminder: 'fa-clock',
+        comment: 'fa-comment',
+        default: 'fa-bell',
+      };
+
+      // Connect to WebSocket Server
+      function connectWebSocket() {
+        // Close existing connection if any
+        if (ws) {
+          ws.close();
+        }
+
+        ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+          console.log('Connected to the WebSocket server');
+          connectionStatus.className = 'connection-status status-connected';
+          connectionStatus.innerHTML =
+            '<i class="fas fa-circle"></i> Connected';
+          reconnectButton.style.display = 'none';
+        };
+
+        ws.onclose = () => {
+          console.log('Disconnected from the WebSocket server');
+          connectionStatus.className = 'connection-status status-disconnected';
+          connectionStatus.innerHTML =
+            '<i class="fas fa-circle"></i> Disconnected';
+          reconnectButton.style.display = 'flex';
+        };
+
+        ws.onerror = (error) => {
+          console.error('WebSocket error:', error);
+          connectionStatus.className = 'connection-status status-disconnected';
+          connectionStatus.innerHTML =
+            '<i class="fas fa-circle"></i> Connection Error';
+          reconnectButton.style.display = 'flex';
+        };
+
+        // Handle incoming messages from the server
+        ws.onmessage = (event) => {
+          if (notificationsEnabled) {
+            try {
+              const data = JSON.parse(event.data);
+              displayNotification(data);
+            } catch (e) {
+              console.error('Error parsing message:', e);
+            }
+          }
+        };
+      }
+
+      // Fungsi untuk menampilkan notifikasi
+      function displayNotification(data) {
+        notificationId++;
+        notificationCount++;
+        updateEmptyState();
+
+        // Get the appropriate icon for the notification type
+        const iconClass = typeIcons[data.type] || typeIcons.default;
+
+        const notificationDiv = document.createElement('div');
+        notificationDiv.classList.add('notification', `type-${data.type}`);
+        notificationDiv.id = `notification-${notificationId}`;
+        notificationDiv.innerHTML = `
+          <div class="notification-icon">
+            <i class="fas ${iconClass}"></i>
+          </div>
+          <div class="notification-content">
+            ${data.content}
+          </div>
+          <div class="notification-actions">
+            <button class="btn btn-read" onclick="markAsRead(${notificationId})" title="Mark as read">
+              <i class="fas fa-check"></i>
+            </button>
+            <button class="btn btn-close" onclick="removeNotification(${notificationId})" title="Dismiss">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+
+        // Add to container
+        notificationContainer.appendChild(notificationDiv);
+
+        // Auto-dismiss after 5 seconds to match server interval
+        setTimeout(() => {
+          const notification = document.getElementById(
+            `notification-${notificationId}`
+          );
+          if (notification && !notification.classList.contains('read')) {
+            notification.style.animation = 'fadeOut 0.5s forwards';
+            setTimeout(() => {
+              if (
+                notification &&
+                notification.parentNode === notificationContainer
+              ) {
+                notification.remove();
+                notificationCount--;
+                updateEmptyState();
+              }
+            }, 500);
+          }
+        }, 5000);
+      }
+
+      // Mark notification as read
+      function markAsRead(id) {
+        const notification = document.getElementById(`notification-${id}`);
+        if (notification) {
+          notification.classList.add('read');
+
+          // Replace read button with text
+          const readBtn = notification.querySelector('.btn-read');
+          if (readBtn) {
+            readBtn.remove();
+          }
+        }
+      }
+
+      // Remove notification
+      function removeNotification(id) {
+        const notification = document.getElementById(`notification-${id}`);
+        if (notification) {
+          notification.style.animation = 'fadeOut 0.5s forwards';
+          setTimeout(() => {
+            if (
+              notification &&
+              notification.parentNode === notificationContainer
+            ) {
+              notification.remove();
+              notificationCount--;
+              updateEmptyState();
+            }
+          }, 500);
+        }
+      }
+
+      // Toggle notifications
+      toggleButton.addEventListener('click', () => {
+        notificationsEnabled = !notificationsEnabled;
+        toggleButton.innerHTML = notificationsEnabled
+          ? '<i class="fas fa-bell-slash"></i> Disable Notifications'
+          : '<i class="fas fa-bell"></i> Enable Notifications';
+
+        if (notificationsEnabled) {
+          toggleButton.style.backgroundColor = '';
+        } else {
+          toggleButton.style.backgroundColor = '#6c757d';
+          // Clear all notifications
+          notificationContainer.innerHTML = '';
+          // Add empty state back
+          notificationContainer.appendChild(emptyState);
+          notificationCount = 0;
+          updateEmptyState();
+        }
+      });
+
+      // Reconnect to WebSocket server
+      reconnectButton.addEventListener('click', () => {
+        connectWebSocket();
+      });
+
+      // Update empty state visibility
+      function updateEmptyState() {
+        if (notificationCount === 0) {
+          emptyState.style.display = 'block';
+          if (!notificationContainer.contains(emptyState)) {
+            notificationContainer.appendChild(emptyState);
+          }
+        } else {
+          emptyState.style.display = 'none';
+        }
+      }
+
+      // Initialize
+      updateEmptyState();
+      connectWebSocket(); // Connect to WebSocket server when page loads
+    </script>
+  </body>
+</html>
