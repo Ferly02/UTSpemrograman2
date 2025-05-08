@@ -1,13 +1,13 @@
 
 
 
-Judul
+<P>Judul</P>
 Membangun Notifikasi Real-Time Menggunakan WebSocket: Solusi Modern untuk Interaksi Web Dinamis
 
 <P>Pendahuluan</P>
 Di era digital, kecepatan informasi adalah salah satu kunci kunci saat meningkatkan pengalaman pengguna. Salah satu cara untuk memberikan informasi segera adalah dengan mempresentasikannya dalam pemberitahuan aktual. Teknologi situs web memungkinkan server untuk mengirim data langsung ke klien tanpa permintaan data yang berulang. Dalam artikel ini, kami akan menjelaskan bagaimana sistem pemberitahuan real-time sederhana dibuat, tetapi Webocket diimplementasikan secara efektif dengan contoh implementasi dan penampilan kode.
 
-Pembahasan Utama
+<P>Pembahasan Utama</P>
 Apa itu soket web?
 WebSocket adalah protokol komunikasi berbasis TCP yang secara terus-menerus memungkinkan koneksi dua arah antara server dan klien. Berbeda dengan HTTP tradisional, yang merupakan respons permintaan, Weboccket memungkinkan server untuk mengirim data kapan saja selama koneksi terbuka.Keunggulan WebSocket untuk Notifikasi Real-Time
 
