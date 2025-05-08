@@ -21,7 +21,7 @@ menerima dan menunjukkan pemberitahuan.
 Implementasi
 
 1. Membuat Server WebSocket (Node.js)
-<img src="real time notification.jpeg">
+<img src="Screenshot serverJS.jpeg">
 Penjelasan singkat:
 •	Server membuat koneksi WebSocket pada port 8080.
 •	Setiap 5 detik, server mengirim notifikasi dengan waktu server saat ini.
