@@ -1,7 +1,10 @@
+
+
+
 Judul
 Membangun Notifikasi Real-Time Menggunakan WebSocket: Solusi Modern untuk Interaksi Web Dinamis
 
-Pendahuluan
+<P>Pendahuluan</P>
 Di era digital, kecepatan informasi adalah salah satu kunci kunci saat meningkatkan pengalaman pengguna. Salah satu cara untuk memberikan informasi segera adalah dengan mempresentasikannya dalam pemberitahuan aktual. Teknologi situs web memungkinkan server untuk mengirim data langsung ke klien tanpa permintaan data yang berulang. Dalam artikel ini, kami akan menjelaskan bagaimana sistem pemberitahuan real-time sederhana dibuat, tetapi Webocket diimplementasikan secara efektif dengan contoh implementasi dan penampilan kode.
 
 Pembahasan Utama
