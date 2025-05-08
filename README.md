@@ -28,7 +28,7 @@ Penjelasan singkat:
 
 
 2. Membuat Klien Web (HTML + JavaScript)
-<img src="Screenshot serverJS.jpeg">
+<img src="">
 
 
 <p>Penjelasan singkat:
