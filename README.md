@@ -128,7 +128,7 @@ Saat program dijalankan:
 •	Setiap 5 detik, pengguna akan menerima notifikasi baru yang berisi waktu server saat itu.
 •	Notifikasi muncul dengan animasi lembut dan otomatis menghilang setelah beberapa saat.
 Contoh hasil tampilannya:
-<img src="SS/1.png">
+<img src="real time notification.jpeg">
  
 [Notifikasi Baru!]
 Waktu server: 14:32:10
