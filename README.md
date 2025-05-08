@@ -28,70 +28,7 @@ Penjelasan singkat:
 
 
 2. Membuat Klien Web (HTML + JavaScript)
-html
-CopyEdit
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Notifikasi Real-Time</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f2f2f2;
-        }
-        #notifications {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 300px;
-        }
-        .notif {
-            background-color: #fff;
-            border-left: 5px solid #4CAF50;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-    </style>
-</head>
-<body>
-
-<h1>Demo Notifikasi Real-Time</h1>
-<div id="notifications"></div>
-
-<script>
-    const socket = new WebSocket('ws://localhost:8080');
-
-    socket.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        showNotification(data.title, data.message);
-    };
-
-    function showNotification(title, message) {
-        const notif = document.createElement('div');
-        notif.className = 'notif';
-        notif.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
-        
-        const notifContainer = document.getElementById('notifications');
-        notifContainer.appendChild(notif);
-
-        // Hapus notifikasi setelah 8 detik
-        setTimeout(() => {
-            notif.remove();
-        }, 8000);
-    }
-</script>
-
-</body>
-</html>
-
+<img src="Screenshot serverJS.jpeg">
 
 
 <p>Penjelasan singkat:
